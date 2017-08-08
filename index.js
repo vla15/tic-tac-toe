@@ -1,58 +1,96 @@
-var prompt = require('prompt');
-var board = [];
-var winner = false;
-var round = 0;
+const prompt = require('prompt');
 
-const ticTacToe = function (board, turn, player) {
-
-  if (round === 9) {
-    return;
+class Game {
+  constructor() {
+    this.board = [ ['_','_','_'], ['_','_','_'], ['_','_','_'] ];
+    this.piece = 'x';
+    this.player = 'player 1'
+    this.round = 0;
   }
 
-  var turn = 'x' || turn;
-  var board = ['_', '_', '_', '_', '_', '_', '_', '_', '_']
-  var player = 'player one' || player;
-  round++
-
-  console.log(
-    `    A B C 
-    0|${board[0]}|${board[3]}|${board[6]}|
-    1|${board[1]}|${board[4]}|${board[7]}|
-    2|${board[2]}|${board[5]}|${board[8]}|`);
-  prompt.start();
-
-
-  var row = {
-    name: 'row',
-    message:`Please input your row ${player}: `
+  checkRowWin() {
+    if (this.board[0][0] === this.board[0][1] === this.board[0][2]) {
+      return true;
+    } else if (this.board[1][0] === this.board[1][1] === this.board[1][2]) {
+      return true;
+    } else if (this.board[2][0] === this.board[2][1] === this.board[2][2]) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  var col = {
-    name: 'col',
-    message: `Please input your col ${player}: ` 
+  checkColWin() {
+    if (this.board[0][0] === this.board[1][0] === this.board[2][0]) {
+      return true;
+    } else if (this.board[0][1] === this.board[1][1] === this.board[1][1]) {
+      return true;
+    } else if (this.board[0][2] === this.board[2][2] === this.board[2][2]) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
+  checkDiagWin() {
+    if (this.board[0][0] === this.board[1][1] === this.board[2][2]) {
+      return true;
+    } else if (this.board[0][2] === this.board[1][1] === this.board[2][0]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-  prompt.get([row, col], (err, results) => {
-    if (err) {
-      return onErr(err);
+  changePlayer() {
+      this.player === 'player 1' ? this.player = 'player 2' : this.player = 'player 1';
+  }
+
+  changePiece() {
+      this.piece === 'x' ? this.piece = 'o' : this.piece = 'x';
+  }
+
+  displayBoard() {
+      console.log('  ', '  1  ', ' 2  ', ' 3')
+      console.log(1, this.board[0].slice(0));
+      console.log(2, this.board[1].slice(0));
+      console.log(3, this.board[2].slice(0));
+  }
+
+  askForInput() {
+    var row = {
+      name: 'row',
+      message: `${this.player} please enter a row number 0 - 2`
     }
-    var colResult
-    if (results.col.toLowerCase() === 'a') {
-      colResult = 0;
-    } else if (results.col.toLowerCase() === 'b') {
-      colResult = 1;
-    } else if (results.col.toLowerCase() === 'c') {
-      colResult = 2;
+    var col = {
+      name: 'col',
+      message: `${this.player} please enter a col number 0 - 2`
     }
-    var rowResult = parseInt(results.row);
-    var spot = rowResult + colResult;
-    if (player === 'player one') {
-      player = 'player two'
-    } else if (player === 'player two') {
-      player = 'player one'
+    prompt.get(['row', 'col'], (err, results) => {
+      this.board[0][results.row][results.col] = this.piece;
+      this.displayBoard();
+    })
+  }
+
+  playGame() {
+    //take row input
+    //take col input
+    this.askForInput();
+    this.changePlayer();
+    this.changePiece();
+    this.round++;
+    this.playRound();
+  }
+
+  playRound() {
+    while (this.round < 9) {
+      this.displayBoard();
+      this.playGame();
     }
-    board[spot] = turn
-    // ticTacToe(board, 'o', player);
-  })
+  }
+
 }
+
+var game = new Game();
+prompt.start();
+game.playGame();
