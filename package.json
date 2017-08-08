@@ -1,0 +1,23 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "Tic tac toe command line",
+  "main": "index.js",
+  "entry point": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vla15/tic-tac-toe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vla15/tic-tac-toe/issues"
+  },
+  "homepage": "https://github.com/vla15/tic-tac-toe#readme",
+  "dependencies": {
+    "prompt": "^1.0.0"
+  }
+}
