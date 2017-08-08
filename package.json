@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/vla15/tic-tac-toe#readme",
   "dependencies": {
+    "node": "^8.2.1",
     "prompt": "^1.0.0"
   }
 }
