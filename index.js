@@ -51,40 +51,36 @@ class Game {
   }
 
   displayBoard() {
-      console.log('  ', '  1  ', ' 2  ', ' 3')
-      console.log(1, this.board[0].slice(0));
-      console.log(2, this.board[1].slice(0));
-      console.log(3, this.board[2].slice(0));
+      console.log(this.board[0].slice(0));
+      console.log(this.board[1].slice(0));
+      console.log(this.board[2].slice(0));
   }
 
   askForInput() {
     var row = {
       name: 'row',
-      message: `${this.player} please enter a row number 0 - 2`
+      message: `${this.player} please enter a row number 1 - 3`
     }
     var col = {
       name: 'col',
-      message: `${this.player} please enter a col number 0 - 2`
+      message: `${this.player} please enter a col number 1 - 3`
     }
     prompt.get(['row', 'col'], (err, results) => {
-      this.board[0][results.row][results.col] = this.piece;
+      this.board[results.row - 1][results.col - 1] = this.piece;
       this.displayBoard();
+      this.changePlayer();
+      this.changePiece();
+      this.round++;
+      this.playRound();
     })
   }
 
   playGame() {
-    //take row input
-    //take col input
     this.askForInput();
-    this.changePlayer();
-    this.changePiece();
-    this.round++;
-    this.playRound();
   }
 
   playRound() {
-    while (this.round < 9) {
-      this.displayBoard();
+    if (this.round < 9) {
       this.playGame();
     }
   }
@@ -93,4 +89,5 @@ class Game {
 
 var game = new Game();
 prompt.start();
+game.displayBoard();
 game.playGame();
