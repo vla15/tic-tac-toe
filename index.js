@@ -8,6 +8,12 @@ class Game {
     this.round = 0;
   }
 
+  checkWin() {
+    this.checkRowWin();
+    this.checkColWin();
+    this.checkDiagWin();
+  }
+
   checkRowWin() {
     if (this.board[0][0] === this.board[0][1] === this.board[0][2]) {
       return true;
@@ -25,7 +31,7 @@ class Game {
       return true;
     } else if (this.board[0][1] === this.board[1][1] === this.board[1][1]) {
       return true;
-    } else if (this.board[0][2] === this.board[2][2] === this.board[2][2]) {
+    } else if (this.board[0][2] === this.board[1][2] === this.board[2][2]) {
       return true;
     } else {
       return false;
@@ -66,12 +72,20 @@ class Game {
       message: `${this.player} please enter a col number 1 - 3`
     }
     prompt.get(['row', 'col'], (err, results) => {
-      this.board[results.row - 1][results.col - 1] = this.piece;
-      this.displayBoard();
-      this.changePlayer();
-      this.changePiece();
-      this.round++;
-      this.playRound();
+      if (this.board[results.row - 1][results.col - 1] === '_') {
+        this.board[results.row - 1][results.col - 1] = this.piece;
+        if (this.checkColWin() || this.checkRowWin() || this.checkDiagWin()) {
+          console.log(`${this.player} wins!`);
+        }
+        this.displayBoard();
+        this.changePlayer();
+        this.changePiece();
+        this.round++;
+        this.playRound();        
+      } else {
+        console.log('invalid placement');
+        this.playGame();
+      }
     })
   }
 
