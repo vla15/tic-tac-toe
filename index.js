@@ -57,9 +57,10 @@ class Game {
   }
 
   displayBoard() {
-      console.log(this.board[0].slice(0));
-      console.log(this.board[1].slice(0));
-      console.log(this.board[2].slice(0));
+      console.log('     1    2    3')
+      console.log(1, this.board[0].slice(0));
+      console.log(2, this.board[1].slice(0));
+      console.log(3, this.board[2].slice(0));
   }
 
   askForInput() {
@@ -75,7 +76,9 @@ class Game {
       if (this.board[results.row - 1][results.col - 1] === '_') {
         this.board[results.row - 1][results.col - 1] = this.piece;
         if (this.checkColWin() || this.checkRowWin() || this.checkDiagWin()) {
+          this.round = 9;
           console.log(`${this.player} wins!`);
+          prompt.stop();
         }
         this.displayBoard();
         this.changePlayer();
