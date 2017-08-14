@@ -8,37 +8,30 @@ class Game {
     this.round = 0;
   }
 
-  checkWin() {
-    this.checkRowWin();
-    this.checkColWin();
-    this.checkDiagWin();
+  checkWin(row, col) {
+    if (this.checkRowWin(row, col) || this.checkColWin(row, col) || this.checkDiagWin(row, col)) {
+      return true;
+    }
+    return false;
   }
 
-  checkRowWin() {
-    if (this.board[0][0] === this.board[0][1] && this.board[0][1] === this.board[0][2]) {
-      return true;
-    } else if (this.board[1][0] === this.board[1][1] && this.board[1][1] === this.board[1][2]) {
-      return true;
-    } else if (this.board[2][0] === this.board[2][1] && this.board[2][1] === this.board[2][2]) {
+  checkRowWin(row, col) {
+    if (this.board[row][col] === this.board[row][0] && this.board[row][col] === this.board[row][1] && this.board[row][col] === this.board[row][2]) {
       return true;
     } else {
       return false;
     }
   }
 
-  checkColWin() {
-    if (this.board[0][0] === this.board[1][0] && this.board[1][0] === this.board[2][0]) {
-      return true;
-    } else if (this.board[0][1] === this.board[1][1] && this.board[1][1] === this.board[1][1]) {
-      return true;
-    } else if (this.board[0][2] === this.board[1][2] && this.board[1][2] === this.board[2][2]) {
+  checkColWin(row, col) {
+    if (this.board[row][col] === this.board[0][col] && this.board[row][col] === this.board[1][col] && this.board[row][col] === this.board[2][col]) {
       return true;
     } else {
       return false;
     }
   }
 
-  checkDiagWin() {
+  checkDiagWin(row, col) {
     if (this.board[0][0] === this.board[1][1] && this.board[1][1] === this.board[2][2]) {
       return true;
     } else if (this.board[0][2] === this.board[1][1] && this.board[1][1] === this.board[2][0]) {
@@ -73,8 +66,15 @@ class Game {
       message: `${this.player} please enter a col number 1 - 3`
     }
     prompt.get(['row', 'col'], (err, results) => {
-      if (this.board[results.row - 1][results.col - 1] !== 'x' || this.board[results.row - 1][results.col - 1] !== 'o' && results.row > 0 && results.col > 0) {
+      if (this.board[results.row - 1][results.col - 1] === '_' && results.row > 0 && results.col > 0) {
         this.board[results.row - 1][results.col - 1] = this.piece;
+        if (this.round >= 4) {
+          if (this.checkWin(results.row - 1, results.col - 1)) {
+            this.round = 9;
+            console.log(`${this.player} wins!`);
+            return;
+          }         
+        }
         this.displayBoard();
         this.changePlayer();
         this.changePiece();
@@ -92,11 +92,6 @@ class Game {
   }
 
   playRound() {
-    if (this.checkWin()) {
-      this.round = 9;
-      console.log(`${this.player} wins!`);
-    }
-
     if (this.round < 9) {
       this.playGame();
     }
