@@ -68,6 +68,7 @@ class Game {
     prompt.get(['row', 'col'], (err, results) => {
       if (this.board[results.row - 1][results.col - 1] === '_' && results.row > 0 && results.col > 0) {
         this.board[results.row - 1][results.col - 1] = this.piece;
+        this.displayBoard();
         if (this.round >= 4) {
           if (this.checkWin(results.row - 1, results.col - 1)) {
             this.round = 9;
@@ -75,7 +76,6 @@ class Game {
             return;
           }         
         }
-        this.displayBoard();
         this.changePlayer();
         this.changePiece();
         this.round++;
